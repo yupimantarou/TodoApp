@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>保護されたページ</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>保護されたコンテンツ</h1>
+    <div id="protected-content">読み込み中...</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('authToken');
+        
+            if (!token) {
+                alert('認証されていません。ログインページへ移動します。');
+                window.location.href = '/login.html';
+                return;
+            }
+        
+            try {
+                const response = await fetch('/login/', { // バックエンドの保護されたAPIエンドポイント
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+        
+                if (response.ok) {
+                    const htmlContent = await response.text();
+                    document.open();
+                    document.write(htmlContent); // サーバーから受け取ったHTMLを直接書き込み
+                    document.close();
+                } else if (response.status === 401) {
+                    alert('認証に失敗しました。再度ログインしてください。');
+                    localStorage.removeItem('authToken');
+                    window.location.href = '/login.html';
+                } else {
+                    alert('保護されたコンテンツの取得に失敗しました。');
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('保護されたコンテンツの取得中にエラーが発生しました:', error);
+                alert('予期しないエラーが発生しました。再度お試しください。');
+                window.location.href = '/login.html';
+            }
+        });
+        </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form" class="login-form">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <a href="./signup.html">ユーザー登録はこちら</a>
+    </div>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            try {
+                const response = await fetch('/auth/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+    
+                if (response.ok) {
+                    const { token } = await response.json();
+                    localStorage.setItem('authToken', token); // トークンをlocalStorageに保存
+                    window.location.href = '/protected.html'; // 保護されたページへリダイレクト
+                } else {
+                    const errorData = await response.text();
+                    console.error('サーバーからのエラー:', errorData);
+                    alert('ユーザー名またはパスワードが無効です。');
+                }
+            } catch (error) {
+                console.error('ログイン中にエラーが発生しました:', error);
+                alert('予期しないエラーが発生しました。再度お試しください。');
+            }
+        });
+        </script>
+</body>
+</html>

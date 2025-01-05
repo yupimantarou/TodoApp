@@ -1,0 +1,150 @@
+body {
+    background-color: white;
+}
+
+.Todo-Title {
+    display: flex;
+    justify-content: center;
+}
+
+.Todo-Form {
+    display: flex;
+    justify-content: center;
+}
+
+.Todo-List {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center
+}
+
+.Todo-List-Today {
+    width: 35%;
+    padding: 10px;
+    text-align: center;
+}
+
+.Todo-List-EndToday {
+    width: 35%;
+    padding: 10px;
+    text-align: center;
+}
+
+.Todo-Lists-Add {
+    display: grid; /* Gridを有効化 */
+    place-items: center; /* 水平方向と垂直方向に中央揃え */
+    border: 1.5px solid;
+    border-radius: 7px;
+    margin: 20px;
+    padding: 10px;
+    background-color: honeydew;
+}
+
+.Todo-Lists-End {
+    display: grid; /* Gridを有効化 */
+    place-items: center; /* 水平方向と垂直方向に中央揃え */
+    border: 1.5px solid;
+    border-radius: 7px;
+    margin: 20px;
+    padding: 10px;
+    background-color: gray;
+}
+
+.Todo-Form-Item {
+    width: 25%;
+    height: 30px;
+    gap: 15px;
+    font-size: 20px;
+    border-radius: 7px;
+    box-shadow: none;
+    margin-bottom: 10px;
+}
+
+.Todo-Form-Button {
+    margin-left: 10px;
+}
+
+.Todo-Lists-Add-Item {
+    margin: 3px;
+    width: 98%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.Todo-Solid {
+    border: none;
+    width: 90%;
+    background-color: dimgray;
+}
+
+.Todo-Lists-Add-hr {
+    border: none;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.Todo-Lists-Add-Div {
+    width: 85%;
+    background-color: white;
+    opacity: 0; /* 初期は透明 */
+    transform: translateX(-50px); /* 初期は左にずれた位置 */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* アニメーション */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+  }
+
+.Todo-Lists-End-Div {
+    width: 85%;
+    background-color: white;
+    opacity: 0; /* 初期は透明 */
+    transform: translateX(-50px); /* 初期は左にずれた位置 */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* アニメーション */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+  /* アニメーション後の状態 */
+  .Todo-Lists-Add-Div.show {
+    opacity: 1; /* 完全に表示 */
+    transform: translateX(0); /* 元の位置 */
+  }
+
+  .Todo-Lists-End-Div.show {
+    opacity: 1; /* 完全に表示 */
+    transform: translateX(0); /* 元の位置 */
+  }
+
+/* 星屑のスタイル */
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(247, 223, 90); /* 星の色 */
+    clip-path: polygon(
+      50% 0%, 61% 35%, 98% 35%, 68% 57%,
+      79% 91%, 50% 70%, 21% 91%, 32% 57%,
+      2% 35%, 39% 35%
+    ); /* 星の形 */
+    pointer-events: none;
+    animation: sparkle-animation 1s ease-out forwards;
+    transform-origin: center;
+  }
+  
+  /* 星屑のアニメーション */
+  @keyframes sparkle-animation {
+    0% {
+      transform: scale(1) rotate(0deg) translate(0, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(var(--scale)) rotate(var(--rotation))
+        translate(var(--x), var(--y));
+      opacity: 0;
+    }
+  }
+  

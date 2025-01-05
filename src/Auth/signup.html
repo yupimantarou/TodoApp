@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+    <h1>User Signup</h1>
+    <form id="signup-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Signup</button>
+        <div id="response"></div>
+    </form>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // フォームのデフォルト動作をキャンセル
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = "Processing...";
+
+            try {
+                const response = await fetch('http://localhost/signup/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                console.log(response);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    responseElement.innerHTML = `<p style="color: green;">${result.message}</p>`;
+
+                    // 1秒後にログインページにリダイレクト
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1000);
+                } else {
+                    const error = await response.json();
+                    responseElement.innerHTML = `<p style="color: red;">Error: ${error.error || 'Unknown error occurred'}</p>`;
+                }
+            } catch (error) {
+                responseElement.innerHTML = `<p style="color: red;">Network error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

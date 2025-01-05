@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=stylesheet href="../css/index.css">
+    <script src="../JsFiles/index.js"></script>
+    <title>Ultimate Todo App</title>
+</head>
+<body>
+    <div class="Todo-Content">
+        <h1 class="Todo-Title">Ultimate Todo App</h1>
+        <div class="Todo-Form">
+            <input class="Todo-Form-Item" type="text" id="Todo-Input" name="task" placeholder="タスクを入力" autofocus>
+            <button class="Todo-Form-Button" type="button" onclick="addTask()">追加</button>
+        </div>
+
+        <div class="Todo-List">
+            <div class="Todo-List-Today">
+                <h3 class="Todo-Lists-Add-Title">今日のタスク</h3>
+                <div class="Todo-Lists-Add" id="Todo-Lists-Add"></div>
+            </div>
+            <div class="Todo-List-EndToday">
+                <h3 class="Todo-Lists-End-Title">終わったタスク</h3>
+                <div class="Todo-Lists-End" id="Todo-Lists-End"></div>
+            </div>
+        </div>
+        <div class="Toto-Fix-Submit">
+            <button class="Todo-Fix-Submit" type="button" onclick="returnTaskArray()">今日のタスクを送信</button>
+        </div>
+    </div>
+</body>
+</html>
