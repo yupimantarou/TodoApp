@@ -1,17 +1,22 @@
-FROM golang:1.23
+FROM golang:1.23 as builder
 
 RUN apt-get update && apt-get install -y iputils-ping default-mysql-client && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY . .
-COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod 644 home.html
-RUN chmod +x /wait-for-it.sh
 
 RUN go mod download
 RUN go build -o main .
 
-EXPOSE 8080
+FROM alpine:latest
+RUN apk add --update --no-cache bash go
 
+WORKDIR /app
+
+COPY wait-for-it.sh /app/wait-for-it.sh
+COPY --from=builder /app/main ./
+
+EXPOSE 8080
 CMD ["./wait-for-it.sh", "db:3306", "--", "go", "run", "."]
