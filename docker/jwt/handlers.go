@@ -51,7 +51,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ユーザーをデータベースに挿入
-	_, err = db.Exec("INSERT INTO users (username, password) VALUES (?, ?)", requestBody.Username, hashedPassword)
+	_, err = db.Exec("INSERT INTO users (username, password_hash) VALUES (?, ?)", requestBody.Username, hashedPassword)
 	if err != nil {
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
 			sendErrorResponse(w, "Username already exists", http.StatusConflict)
@@ -85,7 +85,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// ユーザー情報をデータベースから取得
 	var hashedPassword string
-	err := db.QueryRow("SELECT password FROM users WHERE username = ?", requestBody.Username).Scan(&hashedPassword)
+	err := db.QueryRow("SELECT password_hash FROM users WHERE username = ?", requestBody.Username).Scan(&hashedPassword)
 	if err != nil {
 		sendErrorResponse(w, "Invalid username or password", http.StatusUnauthorized)
 		return

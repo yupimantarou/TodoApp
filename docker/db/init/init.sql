@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS my_database;
+CREATE DATABASE IF NOT EXISTS auth_db;
 
-USE my_database;
+USE auth_db;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
