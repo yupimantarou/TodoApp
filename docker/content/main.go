@@ -50,10 +50,17 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tokenString := parts[1]
 
 	// トークンの検証
-	_, err := validateJWT(tokenString)
+	claims, err := validateJWT(tokenString)
 	if err != nil {
 		log.Printf("Token validation failed: %v", err)
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	// トークンからユーザー名を取得
+	username, ok := claims["username"].(string)
+	if !ok || username == "" {
+		http.Error(w, "Invalid token: Missing username", http.StatusUnauthorized)
 		return
 	}
 
@@ -68,15 +75,21 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// ユーザー名をテンプレートに渡す
+	data := struct {
+		Username string
+	}{
+		Username: username,
+	}
+
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, data); err != nil {
 		log.Printf("Failed to render home.html: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
 
 func main() {
-	// エンドポイントを `/home/` に変更
 	http.HandleFunc("/login/", homeHandler)
 
 	addr := ":8080"
